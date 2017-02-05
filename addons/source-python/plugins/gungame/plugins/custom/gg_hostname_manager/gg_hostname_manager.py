@@ -5,24 +5,18 @@
 # =============================================================================
 # >> IMPORTS
 # =============================================================================
-from configobj import ConfigObj
-
+# Source.Python
 from cvars import ConVar
 from events import Event
 from filters.entities import EntityIter
 from listeners import OnLevelInit
 from listeners.tick import Delay
 
-from gungame.core.paths import GUNGAME_DATA_PATH
+# GunGame
 from gungame.core.plugins.manager import gg_plugin_manager
 
-from .info import info
-
-
-# =============================================================================
-# >> GLOBAL VARIABLES
-# =============================================================================
-database = ConfigObj(GUNGAME_DATA_PATH / info.name + '.ini', unrepr=True)
+# Plugin
+from . import database
 
 
 # =============================================================================
@@ -33,29 +27,7 @@ class _HostnameManager(object):
 
     def __init__(self):
         """Store the base delay."""
-        if not database:
-            self._create_database_file()
         self.delay = Delay(0.1, self._set_hostname)
-
-    @staticmethod
-    def _create_database_file():
-        database['Settings'] = {}
-        database['Settings']['base_name'] = "So and so's GunGame Server"
-        database['Settings']['base_break'] = ' - '
-        database['Settings']['feature_break'] = ' | '
-        for name, verbose_name, priority in (
-            ('gg_teamplay', 'TeamPlay', 1),
-            ('gg_teamwork', 'TeamWork', 1),
-            ('gg_deathmatch', 'DeathMatch', 2),
-            ('gg_elimination', 'Elimination', 2),
-            ('gg_bombing_objective', 'Bombing', 3),
-            ('gg_hostage_objective', 'Hostage', 3),
-        ):
-            database[name] = {}
-            database[name]['name'] = verbose_name
-            database[name]['priority'] = priority
-            database.comments[name] = ['']
-        database.write()
 
     def set_hostname(self):
         """Delay changing the hostname."""
