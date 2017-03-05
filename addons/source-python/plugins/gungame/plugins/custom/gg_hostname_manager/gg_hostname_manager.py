@@ -45,6 +45,12 @@ class _HostnameManager(object):
         # Set the delay back to None
         self.delay = None
 
+        # Set the hostname to the new value
+        ConVar('hostname').set_string(self.get_hostname_value())
+
+    @staticmethod
+    def get_hostname_value():
+        """Return the full value of the new hostname."""
         # Get the basename
         value = database['Settings']['base_name']
 
@@ -88,8 +94,7 @@ class _HostnameManager(object):
             # Separate each with the feature_break
             value += database['Settings']['feature_break'].join(plugins)
 
-        # Set the hostname to the new value
-        ConVar('hostname').set_string(value)
+        return value
 
 hostname_manager = _HostnameManager()
 
@@ -99,6 +104,6 @@ hostname_manager = _HostnameManager()
 # =============================================================================
 @Event('gg_plugin_loaded', 'gg_plugin_unloaded')
 @OnLevelInit
-def update_hostname(arg):
+def update_hostname(*args):
     """Check to see if the hostname needs updated."""
     hostname_manager.set_hostname()
