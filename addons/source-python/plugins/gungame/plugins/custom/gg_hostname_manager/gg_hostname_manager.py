@@ -27,7 +27,13 @@ class _HostnameManager(object):
 
     def __init__(self):
         """Store the base delay."""
+        self._convar = ConVar('hostname')
+        self._original_hostname = self._convar.get_string()
         self.delay = Delay(0.1, self._set_hostname)
+
+    def reset_hostname(self):
+        """Sets the hostname back to the original value on unload."""
+        self._convar.set_string(self._original_hostname)
 
     def set_hostname(self):
         """Delay changing the hostname."""
@@ -46,7 +52,7 @@ class _HostnameManager(object):
         self.delay = None
 
         # Set the hostname to the new value
-        ConVar('hostname').set_string(self.get_hostname_value())
+        self._convar.set_string(self.get_hostname_value())
 
     @staticmethod
     def get_hostname_value():
@@ -97,6 +103,13 @@ class _HostnameManager(object):
         return value
 
 hostname_manager = _HostnameManager()
+
+
+# =============================================================================
+# >> LOAD & UNLOAD
+# =============================================================================
+def unload():
+    hostname_manager.reset_hostname()
 
 
 # =============================================================================
