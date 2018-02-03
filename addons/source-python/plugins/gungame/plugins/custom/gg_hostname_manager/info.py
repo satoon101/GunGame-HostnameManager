@@ -1,4 +1,4 @@
-# ../gungame/plugins/included/gg_hostname_manager/info.py
+# ../gungame/plugins/custom/gg_hostname_manager/info.py
 
 """Contains plugin information."""
 
