@@ -44,5 +44,6 @@ def _create_database_file():
         database.comments[name] = ['']
     database.write()
 
+
 if not database:
     _create_database_file()

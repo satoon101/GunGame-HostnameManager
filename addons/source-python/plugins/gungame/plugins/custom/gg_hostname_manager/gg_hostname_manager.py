@@ -8,7 +8,7 @@
 # Source.Python
 from cvars import ConVar
 from events import Event
-from filters.entities import EntityIter
+from filters.entities import BaseEntityIter
 from listeners import OnLevelInit
 from listeners.tick import Delay
 
@@ -22,7 +22,7 @@ from . import database
 # =============================================================================
 # >> CLASSES
 # =============================================================================
-class _HostnameManager(object):
+class _HostnameManager:
     """Class used to set the hostname."""
 
     def __init__(self):
@@ -32,7 +32,7 @@ class _HostnameManager(object):
         self.delay = Delay(0.1, self._set_hostname)
 
     def reset_hostname(self):
-        """Sets the hostname back to the original value on unload."""
+        """Set the hostname back to the original value on unload."""
         self._convar.set_string(self._original_hostname)
 
     def set_hostname(self):
@@ -61,7 +61,7 @@ class _HostnameManager(object):
         value = database['Settings']['base_name']
 
         # Create an empty dictionary
-        plugin_values = dict()
+        plugin_values = {}
 
         # Loop through all plugins in the database
         for plugin_name, values in database.items():
@@ -71,13 +71,13 @@ class _HostnameManager(object):
 
                 if (
                     plugin_name == 'gg_bombing_objective' and
-                    not len(EntityIter('func_bomb_target'))
+                    not list(BaseEntityIter('func_bomb_target'))
                 ):
                     continue
 
                 if (
                     plugin_name == 'gg_hostage_objective' and
-                    not len(EntityIter('func_hostage_rescue'))
+                    not list(BaseEntityIter('func_hostage_rescue'))
                 ):
                     continue
 
@@ -102,6 +102,7 @@ class _HostnameManager(object):
 
         return value
 
+
 hostname_manager = _HostnameManager()
 
 
@@ -109,6 +110,7 @@ hostname_manager = _HostnameManager()
 # >> LOAD & UNLOAD
 # =============================================================================
 def unload():
+    """Reset the hostname when unloading."""
     hostname_manager.reset_hostname()
 
 
