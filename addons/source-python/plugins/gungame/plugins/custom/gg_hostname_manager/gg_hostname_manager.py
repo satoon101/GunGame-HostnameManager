@@ -27,7 +27,7 @@ class _HostnameManager:
 
     def __init__(self):
         """Store the base delay."""
-        self._convar = ConVar('hostname')
+        self._convar = ConVar("hostname")
         self._original_hostname = self._convar.get_string()
         self.delay = Delay(0.1, self._set_hostname)
 
@@ -58,7 +58,7 @@ class _HostnameManager:
     def get_hostname_value():
         """Return the full value of the new hostname."""
         # Get the basename
-        value = database['Settings']['base_name']
+        value = database["Settings"]["base_name"]
 
         # Create an empty dictionary
         plugin_values = {}
@@ -70,25 +70,25 @@ class _HostnameManager:
             if plugin_name in gg_plugin_manager:
 
                 if (
-                    plugin_name == 'gg_bombing_objective' and
-                    not list(BaseEntityIter('func_bomb_target'))
+                    plugin_name == "gg_bombing_objective" and
+                    not list(BaseEntityIter("func_bomb_target"))
                 ):
                     continue
 
                 if (
-                    plugin_name == 'gg_hostage_objective' and
-                    not list(BaseEntityIter('func_hostage_rescue'))
+                    plugin_name == "gg_hostage_objective" and
+                    not list(BaseEntityIter("func_hostage_rescue"))
                 ):
                     continue
 
                 # Store the plugin's name and priority
-                plugin_values[values['name']] = int(values['priority'])
+                plugin_values[values["name"]] = int(values["priority"])
 
         # Are there any plugins that are loaded?
         if plugin_values:
 
             # Add the base_break to the string
-            value += database['Settings']['base_break']
+            value += database["Settings"]["base_break"]
 
             # Sort the loaded plugins by their priority
             plugins = sorted(
@@ -98,7 +98,7 @@ class _HostnameManager:
 
             # Add all loaded plugins to the string
             # Separate each with the feature_break
-            value += database['Settings']['feature_break'].join(plugins)
+            value += database["Settings"]["feature_break"].join(plugins)
 
         return value
 
@@ -117,7 +117,7 @@ def unload():
 # =============================================================================
 # >> GUNGAME EVENTS
 # =============================================================================
-@Event('gg_plugin_loaded', 'gg_plugin_unloaded')
+@Event("gg_plugin_loaded", "gg_plugin_unloaded")
 @OnLevelInit
 def update_hostname(*args):
     """Check to see if the hostname needs updated."""
