@@ -9,7 +9,7 @@
 from configobj import ConfigObj
 
 # GunGame
-from gungame.core.paths import GUNGAME_DATA_PATH
+from gungame.core.paths import GUNGAME_CFG_PATH
 
 # Plugin
 from .info import info
@@ -17,7 +17,7 @@ from .info import info
 # =============================================================================
 # >> GLOBAL VARIABLES
 # =============================================================================
-database = ConfigObj(GUNGAME_DATA_PATH / info.name + ".ini", unrepr=True)
+database = ConfigObj(GUNGAME_CFG_PATH / info.name + ".ini", unrepr=True)
 
 
 # =============================================================================
